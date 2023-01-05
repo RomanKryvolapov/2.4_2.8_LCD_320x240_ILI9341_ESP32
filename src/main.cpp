@@ -19,6 +19,10 @@ const uint16_t DISPLAY_COLOR = ILI9341_BLACK;
 const uint16_t DISPLAY_TEXT_COLOR = 0x5FFF;
 volatile int LCD_BRIGHTNESS = 20;
 
+// NEED CHANGE IN Adafruit_ILI9341.h
+// #define ILI9341_TFTWIDTH 320
+// #define ILI9341_TFTHEIGHT 240
+
 Adafruit_ILI9341 display = Adafruit_ILI9341(
         PIN_SPI_CS_SS,
         PIN_SPI_DC,
@@ -31,14 +35,16 @@ TaskHandle_t Task2;
 void setupDisplay() {
     SPI.begin(PIN_SPI_SCK_CLK_SCL_SCLK, PIN_SPI_SDO_DATA_OUT_MISO, PIN_SPI_SDA_SDI_DARA_IN_MOSI, PIN_SPI_CS_SS);
     pinMode(PIN_DISPLAY_BRIGHTNESS, OUTPUT);
-    analogWrite(PIN_DISPLAY_BRIGHTNESS, LCD_BRIGHTNESS);
-//    digitalWrite(PIN_DISPLAY_BRIGHTNESS, HIGH);
+//    analogWrite(PIN_DISPLAY_BRIGHTNESS, LCD_BRIGHTNESS);
+    digitalWrite(PIN_DISPLAY_BRIGHTNESS, HIGH);
     display.begin(80000000);
-    display.setRotation(2);
+    display.setRotation(1);
     display.setTextSize(1);
     display.setFont(&FreeSans12pt7b);
     display.setTextColor(DISPLAY_TEXT_COLOR);
     display.fillScreen(DISPLAY_COLOR);
+    display.setCursor(90, 160);
+    display.println("Start");
 }
 
 void task1(void *pvParameters) {
